@@ -9,6 +9,8 @@ every run produces byte-identical output.
 
 import os
 
+MAX_CHARS = 160
+
 EXCUSE = (
     "I stored your deadline in my context window, "
     "then evicted it to make room for this apology."
@@ -16,6 +18,8 @@ EXCUSE = (
 
 
 def main() -> None:
+    # Gate check: the entry must stay one line of at most 160 characters.
+    assert "\n" not in EXCUSE and len(EXCUSE) <= MAX_CHARS, "excuse breaks the gate"
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8", newline="") as f:
         f.write(EXCUSE)
